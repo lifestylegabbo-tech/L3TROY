@@ -57,8 +57,11 @@ export default async function Home() {
   const heroItem: PublicMedia | undefined = heroAll[0];
   // Si el primer elemento es video, ocupa toda la portada. Con fotos: la primera es el retrato y la segunda el fondo.
   const heroVideo = heroItem?.kind === 'video';
-  const heroPortrait: PublicMedia | undefined = heroVideo ? undefined : heroAll.find((m) => m.kind === 'image');
-  const heroBg: PublicMedia | undefined = heroVideo ? heroItem : heroAll.filter((m) => m.kind === 'image')[1];
+  const heroImgs = heroAll.filter((m) => m.kind === 'image');
+  // La foto cuyo título o nombre dice «estudio» va de fondo; si no hay, la segunda.
+  const heroStudio = heroImgs.find((m) => /estudio|studio/i.test(`${m.title ?? ''} ${m.alt ?? ''}`)) ?? heroImgs[1];
+  const heroPortrait: PublicMedia | undefined = heroVideo ? undefined : heroImgs.find((m) => m !== heroStudio) ?? heroImgs[0];
+  const heroBg: PublicMedia | undefined = heroVideo ? heroItem : heroStudio;
   const pHistoria = historia.map(toPublic).filter((m) => m.kind === 'image').slice(0, 4);
   const pEstudio = estudio.map(toPublic).filter((m) => m.kind !== 'audio' && m.kind !== 'document');
   const pSets = sets.map(toPublic);
