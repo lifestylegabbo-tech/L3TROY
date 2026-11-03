@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { ToastProvider } from './helpers';
+import QuotesTab from './QuotesTab';
+import ClientsTab from './ClientsTab';
 import MediaLibrary from './MediaLibrary';
 import ContentTab from './ContentTab';
 import UsersTab from './UsersTab';
@@ -13,6 +15,8 @@ type User = { id: string; name: string; email: string; role: 'admin' | 'editor' 
 export default function AdminApp({ user }: { user: User }) {
   const tabs = [
     ['media', 'Media Library'],
+    ['quotes', 'Cotizaciones'],
+    ['clients', 'Clientes'],
     ['content', 'Textos y eventos'],
     ['storage', 'Almacenamiento'],
     ...(user.role === 'admin' ? ([['users', 'Usuarios']] as const) : []),
@@ -37,6 +41,8 @@ export default function AdminApp({ user }: { user: User }) {
         </div>
         <div className="adm-body">
           {tab === 'media' && <MediaLibrary />}
+          {tab === 'quotes' && <QuotesTab isAdmin={user.role === 'admin'} />}
+          {tab === 'clients' && <ClientsTab isAdmin={user.role === 'admin'} />}
           {tab === 'content' && <ContentTab />}
           {tab === 'storage' && <StorageTab isAdmin={user.role === 'admin'} />}
           {tab === 'users' && user.role === 'admin' && <UsersTab meId={user.id} />}

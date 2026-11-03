@@ -5,6 +5,8 @@ import Visualizer from '@/components/Visualizer';
 import SetsPlayer from '@/components/SetsPlayer';
 import { Masonry, VideoCard } from '@/components/Gallery';
 import { Pic, Placeholder } from '@/components/Pic';
+import QuoteForm from '@/components/QuoteForm';
+import { q } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 
@@ -37,6 +39,7 @@ function Head({ no, title, lead, id }: { no: string; title: string; lead: string
 }
 
 export default async function Home() {
+  const services = await safe(q<{ id: string; name: string; description: string | null }>('SELECT id, name, description FROM services WHERE active ORDER BY sort, created_at'), []);
   const [c, hero, historia, estudio, sets, eventosMedia, galeria, colabs, contacto, events] = await Promise.all([
     getContent(),
     safe(publishedBySection('hero', 3), []),
@@ -50,7 +53,12 @@ export default async function Home() {
     safe(publicEvents(), []),
   ]);
 
-  const heroItem: PublicMedia | undefined = hero.map(toPublic)[0];
+  const heroAll = hero.map(toPublic);
+  const heroItem: PublicMedia | undefined = heroAll[0];
+  // Si el primer elemento es video, ocupa toda la portada. Con fotos: la primera es el retrato y la segunda el fondo.
+  const heroVideo = heroItem?.kind === 'video';
+  const heroPortrait: PublicMedia | undefined = heroVideo ? undefined : heroAll.find((m) => m.kind === 'image');
+  const heroBg: PublicMedia | undefined = heroVideo ? heroItem : heroAll.filter((m) => m.kind === 'image')[1];
   const pHistoria = historia.map(toPublic).filter((m) => m.kind === 'image').slice(0, 4);
   const pEstudio = estudio.map(toPublic).filter((m) => m.kind !== 'audio' && m.kind !== 'document');
   const pSets = sets.map(toPublic);
@@ -84,34 +92,45 @@ export default async function Home() {
       <main id="top">
         {/* ====== PRÓLOGO ====== */}
         <section className="hero" aria-label="Portada">
-          {heroItem ? (
+          {heroBg ? (
             <div className="hero-media">
-              {heroItem.kind === 'video' ? (
+              {heroBg.kind === 'video' ? (
                 // eslint-disable-next-line jsx-a11y/media-has-caption
-                <video src={`/api/media/${heroItem.id}`} poster={heroItem.hasPoster ? `/api/media/${heroItem.id}?v=poster` : undefined} autoPlay muted loop playsInline preload="metadata" />
+                <video src={`/api/media/${heroBg.id}`} poster={heroBg.hasPoster ? `/api/media/${heroBg.id}?v=poster` : undefined} autoPlay muted loop playsInline preload="metadata" />
               ) : (
-                <Pic m={heroItem} sizes="100vw" priority />
+                <Pic m={heroBg} sizes="100vw" priority />
               )}
             </div>
           ) : (
             <div className="hero-media fallback" />
           )}
-          <div>
-            <span className="eyebrow">{c.role}</span>
-            <h1 className="wordmark" aria-label={c.artist}>
-              {c.artist.slice(0, 1)}
-              <span>{c.artist.slice(1, 2)}</span>
-              {c.artist.slice(2)}
-            </h1>
-            <p className="hero-tag">{c.tagline}</p>
-            <div className="hero-actions">
-              <a className="btn solid" href="#sets">
-                {c.hero_cta}
-              </a>
-              <a className="btn magenta" href="#contacto">
-                Contratar
-              </a>
+          <div className={`hero-inner ${heroPortrait ? 'with-portrait' : ''}`}>
+            <div className="hero-copy">
+              <span className="eyebrow">{c.role}</span>
+              <h1 className="wordmark" aria-label={c.artist}>
+                {c.artist.slice(0, 1)}
+                <span>{c.artist.slice(1, 2)}</span>
+                {c.artist.slice(2)}
+              </h1>
+              <p className="hero-tag">{c.tagline}</p>
+              <div className="hero-actions">
+                <a className="btn solid" href="#sets">
+                  {c.hero_cta}
+                </a>
+                <a className="btn magenta" href="#cotiza">
+                  Contratar
+                </a>
+              </div>
             </div>
+            {heroPortrait && (
+              <figure className="hero-portrait">
+                <div className="hp-frame">
+                  <Pic m={heroPortrait} sizes="(max-width: 900px) 80vw, 34vw" priority />
+                </div>
+                <span className="hp-tick tl" aria-hidden />
+                <span className="hp-tick br" aria-hidden />
+              </figure>
+            )}
           </div>
           <span className="scroll-cue">Desliza</span>
           <div className="hero-viz">
@@ -312,6 +331,14 @@ export default async function Home() {
             </div>
           </section>
         )}
+
+        {/* ====== COTIZA ====== */}
+        <section id="cotiza" className="chapter cyan" aria-labelledby="h-cotiza">
+          <Head no="07" id="h-cotiza" title="Cotiza tu evento" lead="Cuéntanos de tu fecha y lo que necesitas. Te respondemos con una propuesta a la medida." />
+          <Reveal className="quote-wrap">
+            <QuoteForm services={services} />
+          </Reveal>
+        </section>
 
         {/* ====== EPÍLOGO · CONTACTO ====== */}
         <section id="contacto" className="chapter purple" aria-labelledby="h-contacto">

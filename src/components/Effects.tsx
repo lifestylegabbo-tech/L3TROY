@@ -96,6 +96,7 @@ const LINKS = [
   ['sets', 'Sets'],
   ['eventos', 'En cabina'],
   ['galeria', 'Galería'],
+  ['cotiza', 'Cotiza'],
   ['contacto', 'Booking'],
 ] as const;
 
