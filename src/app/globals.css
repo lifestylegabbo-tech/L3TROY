@@ -1123,3 +1123,25 @@ table.t th { color: var(--muted); font-weight: 500; font-size: 0.76rem; letter-s
   .wordmark, .jog, .scroll-cue::after, .eq i { animation: none !important; }
   .reveal { opacity: 1; transform: none; transition: none; }
 }
+
+/* Panel en celular: pestañas en lista vertical */
+@media (max-width: 720px) {
+  .tabs {
+    flex-direction: column;
+    gap: 6px;
+    overflow: visible;
+    padding: 14px clamp(14px, 3vw, 32px);
+  }
+  .tab {
+    width: 100%;
+    text-align: left;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--bg-2);
+  }
+  .tab.on {
+    border-color: var(--cyan);
+    box-shadow: 0 0 16px rgba(0, 217, 255, 0.25);
+  }
+}
