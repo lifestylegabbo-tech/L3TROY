@@ -27,11 +27,21 @@ export default function AdminApp({ user }: { user: User }) {
     <ToastProvider>
       <div className="adm">
         <div className="adm-top">
-          <a href="/" className="logo">L<b>3</b>TROY <span className="muted" style={{ fontFamily: 'var(--font-body)', fontWeight: 400, letterSpacing: 0, fontSize: '0.8rem' }}>· Panel</span></a>
-          <div className="adm-user">
-            <span>{user.name} · {user.role === 'admin' ? 'Administrador' : 'Editor'}</span>
-            <a className="btn sm" href="/" target="_blank" rel="noreferrer">Ver sitio</a>
+          <a href="/" className="adm-brand" aria-label="L3TROY, ir al sitio">
+            <span className="adm-logo">L<b>3</b>TROY</span>
+            <span className="adm-tag">Panel</span>
+          </a>
+          <div className="adm-actions">
+            <a className="btn sm" href="/" target="_blank" rel="noreferrer">Ver sitio ↗</a>
             <button className="btn sm" onClick={async () => { await fetch('/api/auth/logout', { method: 'POST' }); location.href = '/admin/login'; }}>Salir</button>
+          </div>
+          <div className="adm-who">
+            <span className="adm-av" aria-hidden>{user.name.trim().slice(0, 1).toUpperCase()}</span>
+            <span className="adm-name">
+              <b>{user.name}</b>
+              {user.name.trim().toLowerCase() !== (user.role === 'admin' ? 'administrador' : 'editor') && <small>{user.role === 'admin' ? 'Administrador' : 'Editor'}</small>}
+            </span>
+            <span className={`adm-role ${user.role}`}>{user.role === 'admin' ? 'Admin' : 'Editor'}</span>
           </div>
         </div>
         <div className="tabs" role="tablist">
