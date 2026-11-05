@@ -62,7 +62,7 @@ export default async function Home() {
   const heroStudio = heroImgs.find((m) => /estudio|studio/i.test(`${m.title ?? ''} ${m.alt ?? ''}`)) ?? heroImgs[1];
   const heroPortrait: PublicMedia | undefined = heroVideo ? undefined : heroImgs.find((m) => m !== heroStudio) ?? heroImgs[0];
   const heroBg: PublicMedia | undefined = heroVideo ? heroItem : heroStudio;
-  const pHistoria = historia.map(toPublic).filter((m) => m.kind === 'image').slice(0, 4);
+  const historiaVideo = historia.map(toPublic).find((m) => m.kind === 'video');
   const pEstudio = estudio.map(toPublic).filter((m) => m.kind !== 'audio' && m.kind !== 'document');
   const pSets = sets.map(toPublic);
   const tracks = pSets.filter((m) => m.kind === 'audio');
@@ -162,26 +162,16 @@ export default async function Home() {
                 </div>
               </div>
             </Reveal>
-            <div className="story-photos">
-              {pHistoria.length
-                ? pHistoria.map((m, i) => (
-                    <Reveal key={m.id} delay={i * 0.12}>
-                      <figure className="frame" style={{ margin: 0 }}>
-                        <Pic m={m} sizes="(max-width: 900px) 46vw, 24vw" />
-                        {m.title && (
-                          <figcaption className="cap">
-                            <b>{m.title}</b>
-                            {m.description}
-                          </figcaption>
-                        )}
-                      </figure>
-                    </Reveal>
-                  ))
-                : [0, 1].map((i) => (
-                    <div key={i} className="frame">
-                      <Placeholder label="Foto próximamente" />
-                    </div>
-                  ))}
+            <div className="story-video">
+              {historiaVideo ? (
+                <Reveal>
+                  <VideoCard m={historiaVideo} />
+                </Reveal>
+              ) : (
+                <div className="frame">
+                  <Placeholder label="Video de su historia · próximamente" />
+                </div>
+              )}
             </div>
           </div>
         </section>

@@ -1442,3 +1442,14 @@ body::before {
 @media (min-width: 1024px) {
   .events-layout.solo .mosaic .vcard { border-width: 3px; box-shadow: 14px 14px 0 color-mix(in srgb, var(--accent) 80%, #000), 28px 28px 0 rgba(255, 178, 26, 0.85); }
 }
+
+/* Historia: un solo video, grande */
+.story-grid:has(.story-video) { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.3fr); }
+.story-video { min-width: 0; width: 100%; }
+.story-video .vcard, .story-video .frame { width: 100%; aspect-ratio: 16 / 9; }
+.story-video .vcard video, .story-video .vcard img { object-fit: contain; background: #000; }
+.story-video .vcard { box-shadow: 10px 10px 0 color-mix(in srgb, var(--accent) 80%, #000), 20px 20px 0 rgba(255, 178, 26, 0.85); border-width: 3px; }
+@media (max-width: 1023px) {
+  .story-grid:has(.story-video) { grid-template-columns: 1fr; }
+  .story-video .vcard { box-shadow: 5px 5px 0 color-mix(in srgb, var(--accent) 80%, #000); }
+}

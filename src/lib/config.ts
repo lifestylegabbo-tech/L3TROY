@@ -13,7 +13,7 @@ export type BucketId = (typeof BUCKETS)[number]['id'];
 
 export const SECTIONS = [
   { id: 'hero', label: 'Portada (Hero)', hint: 'Imagen o video principal de apertura' },
-  { id: 'historia', label: 'Historia', hint: 'Fotos del recorrido del artista' },
+  { id: 'historia', label: 'Historia', hint: 'Video de su historia' },
   { id: 'estudio', label: 'El estudio', hint: 'Fotos del estudio y la producción' },
   { id: 'sets', label: 'Sets y mashups', hint: 'Audio y video de sets' },
   { id: 'eventos', label: 'En cabina / Eventos', hint: 'Fotos y videos de presentaciones' },
