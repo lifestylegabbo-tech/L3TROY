@@ -8,7 +8,7 @@ type Ctx = { params: Promise<{ id: string }> };
 
 const patchSchema = z.object({
   name: z.string().min(2).optional(),
-  role: z.enum(['admin', 'editor']).optional(),
+  role: z.enum(['admin', 'productor', 'manager']).optional(),
   active: z.boolean().optional(),
   password: z.string().min(10, 'La contraseña debe tener al menos 10 caracteres').optional(),
 });

@@ -7,7 +7,7 @@ Landing narrativa (storytelling) con identidad neón, panel de administración c
 ## Qué incluye
 
 - **Landing en capítulos:** Portada → Historia → Estudio → Sets (reproductor con visualizador) → En cabina (eventos) → Galería → Colaboraciones → Contacto.
-- **Panel `/admin`:** Media Library, textos y eventos, almacenamiento, usuarios (Administrador / Editor) y cambio de contraseña.
+- **Panel `/admin`:** Media Library, textos y eventos, almacenamiento, usuarios (Administrador / Productor / Manager) y cambio de contraseña.
 - **Publicación automática:** lo que se publica en el panel aparece en la sección correspondiente de la landing (con fecha de publicación programable).
 
 ## Almacenamiento y calidad original
@@ -27,7 +27,7 @@ Landing narrativa (storytelling) con identidad neón, panel de administración c
 
 ## Variables de entorno
 
-Ver `.env.example`. Principales: `DATABASE_URL`, `S3_ENDPOINT`, `S3_REGION`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, `SESSION_SECRET` (mín. 32 caracteres).
+Ver `.env.example`. Principales: `DATABASE_URL`, `S3_ENDPOINT`, `S3_REGION`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, `SESSION_SECRET` (mín. 32 caracteres), `STORAGE_QUOTA_BYTES` (cuota real del plan; si está vacía el panel no inventa ningún límite).
 
 ## Puesta en marcha
 
@@ -52,13 +52,13 @@ npm run dev
 
 - Sesiones con cookie `httpOnly` firmada (JWT HS256, 7 días), verificada contra la base en cada petición; usuarios desactivados pierden acceso de inmediato.
 - Contraseñas con bcrypt (costo 12), límite de intentos de inicio de sesión.
-- Roles: **Administrador** (todo) y **Editor** (subir, editar y publicar contenido; no gestiona usuarios ni formatos).
+- Roles: **Administrador** (todo) y **Productor** y **Manager** (subir, editar y publicar contenido, cotizaciones y clientes; no gestionan usuarios ni formatos).
 - Ninguna credencial llega al navegador: solo URLs firmadas y de corta duración.
 - Eliminar un archivo en uso pide confirmación, indica dónde está publicado y, al borrarlo, desaparece de la landing sin dejar enlaces rotos.
 
 ## Panel de almacenamiento
 
-Muestra espacio usado (originales + versiones), conteo de fotos/videos/audios/archivos, desglose por carpeta, los 10 archivos más pesados. El tráfico de transferencia no lo expone el almacenamiento por API; se consulta en la consola de Neon.
+Muestra espacio usado (originales + versiones), disponible según `STORAGE_QUOTA_BYTES`, conteo de fotos/videos/audios/archivos, desglose por carpeta, los 10 archivos más pesados y alertas al 75 % y 90 %. El tráfico de transferencia no lo expone el almacenamiento por API; se consulta en la consola de Neon.
 
 ## Contenido editable
 

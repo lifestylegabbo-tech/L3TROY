@@ -4,7 +4,8 @@ import { NextResponse } from 'next/server';
 import { q1 } from './db';
 
 export const COOKIE = 'l3_session';
-export type Role = 'admin' | 'editor';
+export type Role = 'admin' | 'productor' | 'manager';
+export const ROLE_LABEL: Record<Role, string> = { admin: 'Administrador', productor: 'Productor', manager: 'Manager' };
 export type Session = { id: string; email: string; name: string; role: Role };
 
 function key() {
@@ -59,7 +60,7 @@ export async function getSession(): Promise<Session | null> {
   }
 }
 
-export async function guard(roles: Role[] = ['admin', 'editor']) {
+export async function guard(roles: Role[] = ['admin', 'productor', 'manager']) {
   const s = await getSession();
   if (!s) return { error: NextResponse.json({ error: 'Sesión no válida. Inicia sesión de nuevo.' }, { status: 401 }) } as const;
   if (!roles.includes(s.role)) {

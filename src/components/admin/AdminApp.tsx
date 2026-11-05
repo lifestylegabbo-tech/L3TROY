@@ -10,7 +10,8 @@ import UsersTab from './UsersTab';
 import StorageTab from './StorageTab';
 import AccountTab from './AccountTab';
 
-type User = { id: string; name: string; email: string; role: 'admin' | 'editor' };
+const ROLE_NAMES = { admin: 'Administrador', productor: 'Productor', manager: 'Manager' } as const;
+type User = { id: string; name: string; email: string; role: 'admin' | 'productor' | 'manager' };
 
 export default function AdminApp({ user }: { user: User }) {
   const tabs = [
@@ -39,9 +40,9 @@ export default function AdminApp({ user }: { user: User }) {
             <span className="adm-av" aria-hidden>{user.name.trim().slice(0, 1).toUpperCase()}</span>
             <span className="adm-name">
               <b>{user.name}</b>
-              {user.name.trim().toLowerCase() !== (user.role === 'admin' ? 'administrador' : 'editor') && <small>{user.role === 'admin' ? 'Administrador' : 'Editor'}</small>}
+              {user.name.trim().toLowerCase() !== ROLE_NAMES[user.role].toLowerCase() && <small>{ROLE_NAMES[user.role]}</small>}
             </span>
-            <span className={`adm-role ${user.role}`}>{user.role === 'admin' ? 'Admin' : 'Editor'}</span>
+            <span className={`adm-role ${user.role}`}>{user.role === 'admin' ? 'Admin' : ROLE_NAMES[user.role]}</span>
           </div>
         </div>
         <div className="tabs" role="tablist">

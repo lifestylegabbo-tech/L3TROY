@@ -18,7 +18,7 @@ export async function POST(req: Request) {
   const parsed = schema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: 'Correo o contraseña no válidos.' }, { status: 400 });
   const email = parsed.data.email.toLowerCase();
-  const u = await q1<{ id: string; email: string; name: string; role: 'admin' | 'editor'; password_hash: string; active: boolean }>(
+  const u = await q1<{ id: string; email: string; name: string; role: 'admin' | 'productor' | 'manager'; password_hash: string; active: boolean }>(
     'SELECT id, email, name, role, password_hash, active FROM users WHERE email = $1',
     [email],
   );

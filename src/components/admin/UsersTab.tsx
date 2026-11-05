@@ -3,12 +3,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Confirm, jf, useToast } from './helpers';
 
-type U = { id: string; email: string; name: string; role: 'admin' | 'editor'; active: boolean; created_at: string; last_login_at: string | null };
+type U = { id: string; email: string; name: string; role: 'admin' | 'productor' | 'manager'; active: boolean; created_at: string; last_login_at: string | null };
 
 export default function UsersTab({ meId }: { meId: string }) {
   const toast = useToast();
   const [users, setUsers] = useState<U[]>([]);
-  const [f, setF] = useState({ name: '', email: '', role: 'editor', password: '' });
+  const [f, setF] = useState({ name: '', email: '', role: 'productor', password: '' });
   const [del, setDel] = useState<U | null>(null);
   const [reset, setReset] = useState<U | null>(null);
   const [newPw, setNewPw] = useState('');
@@ -28,7 +28,7 @@ export default function UsersTab({ meId }: { meId: string }) {
     try {
       await jf('/api/admin/users', { method: 'POST', body: JSON.stringify(f) });
       toast(`Usuario creado. Comparte la contraseña inicial de forma segura: ${f.password}`);
-      setF({ name: '', email: '', role: 'editor', password: '' });
+      setF({ name: '', email: '', role: 'productor', password: '' });
       load();
     } catch (e) {
       toast((e as Error).message, true);
@@ -48,14 +48,15 @@ export default function UsersTab({ meId }: { meId: string }) {
       <section className="panel">
         <h2>Crear usuario</h2>
         <p className="sub">
-          <b>Administrador</b>: todo, incluidos usuarios y formatos. <b>Editor</b>: sube, edita y publica contenido.
+          <b>Administrador</b>: todo, incluidos usuarios y formatos. <b>Productor</b> y <b>Manager</b>: suben, editan y publican contenido, y atienden cotizaciones y clientes. Solo el administrador crea usuarios y cambia formatos.
         </p>
         <div className="row two">
           <label className="f">Nombre<input type="text" value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} /></label>
           <label className="f">Correo<input type="email" value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} /></label>
           <label className="f">Rol
             <select value={f.role} onChange={(e) => setF({ ...f, role: e.target.value })}>
-              <option value="editor">Editor</option>
+              <option value="productor">Productor</option>
+              <option value="manager">Manager</option>
               <option value="admin">Administrador</option>
             </select>
           </label>
@@ -83,7 +84,8 @@ export default function UsersTab({ meId }: { meId: string }) {
                   <td>{u.email}</td>
                   <td>
                     <select value={u.role} disabled={u.id === meId} onChange={(e) => patch(u, { role: e.target.value })} style={{ width: 'auto' }}>
-                      <option value="editor">Editor</option>
+                      <option value="productor">Productor</option>
+              <option value="manager">Manager</option>
                       <option value="admin">Administrador</option>
                     </select>
                   </td>

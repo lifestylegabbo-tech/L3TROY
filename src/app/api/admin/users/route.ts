@@ -14,7 +14,7 @@ export async function GET() {
 const createSchema = z.object({
   email: z.string().email('Correo no válido'),
   name: z.string().min(2, 'Escribe un nombre'),
-  role: z.enum(['admin', 'editor']),
+  role: z.enum(['admin', 'productor', 'manager']),
   password: z.string().min(10, 'La contraseña debe tener al menos 10 caracteres'),
 });
 

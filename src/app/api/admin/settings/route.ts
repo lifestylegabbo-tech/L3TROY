@@ -28,7 +28,7 @@ const formatsSchema = z.object({
 
 export async function PUT(req: Request) {
   const body = await req.json().catch(() => null);
-  const g = await guard(body?.formats ? ['admin'] : ['admin', 'editor']);
+  const g = await guard(body?.formats ? ['admin'] : ['admin', 'productor', 'manager']);
   if ('error' in g) return g.error;
   const p = z.object({ content: contentSchema.optional(), formats: formatsSchema.optional() }).safeParse(body);
   if (!p.success) return NextResponse.json({ error: 'Datos no válidos.' }, { status: 400 });
