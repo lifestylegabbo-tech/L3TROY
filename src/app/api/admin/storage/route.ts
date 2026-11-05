@@ -25,20 +25,15 @@ export async function GET() {
     `SELECT category, count(*)::text AS files, COALESCE(sum(size_bytes),0)::text AS bytes FROM media WHERE upload_state='ready' GROUP BY category`,
   );
   const used = Number(totals?.bytes ?? 0) + Number(totals?.variant_bytes ?? 0);
-  const quotaRaw = process.env.STORAGE_QUOTA_BYTES;
-  const quota = quotaRaw && Number(quotaRaw) > 0 ? Number(quotaRaw) : null;
-  const ratio = quota ? used / quota : null;
   const alerts: { level: 'warn' | 'danger'; message: string }[] = [];
-  if (ratio !== null && ratio >= 0.9) alerts.push({ level: 'danger', message: 'Estás usando más del 90% del almacenamiento contratado.' });
-  else if (ratio !== null && ratio >= 0.75) alerts.push({ level: 'warn', message: 'Estás usando más del 75% del almacenamiento contratado.' });
   if (Number(totals?.failed ?? 0) > 0) alerts.push({ level: 'warn', message: `Hay ${totals?.failed} subidas fallidas que ocupan registro. Reintenta o elimínalas.` });
 
   return NextResponse.json({
     usedBytes: used,
     originalBytes: Number(totals?.bytes ?? 0),
     variantBytes: Number(totals?.variant_bytes ?? 0),
-    quotaBytes: quota,
-    quotaConfigured: quota !== null,
+    quotaBytes: null,
+    quotaConfigured: false,
     counts: {
       files: Number(totals?.files ?? 0),
       images: Number(totals?.images ?? 0),

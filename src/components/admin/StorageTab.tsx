@@ -19,7 +19,6 @@ export default function StorageTab({ isAdmin }: { isAdmin: boolean }) {
     jf<S>('/api/admin/storage').then(setS).catch((e) => toast(e.message, true));
   }, [toast]);
   if (!s) return <p className="muted">Cargando…</p>;
-  const pct = s.quotaBytes ? Math.min(100, (s.usedBytes / s.quotaBytes) * 100) : null;
   return (
     <>
       {s.alerts.map((a) => (
@@ -27,24 +26,14 @@ export default function StorageTab({ isAdmin }: { isAdmin: boolean }) {
       ))}
       <div className="kpis">
         <div className="kpi"><b>{fmtBytes(s.usedBytes)}</b><span>Espacio usado</span></div>
-        <div className="kpi"><b>{s.quotaBytes ? fmtBytes(Math.max(0, s.quotaBytes - s.usedBytes)) : '—'}</b><span>Disponible</span></div>
         <div className="kpi"><b>{s.counts.images}</b><span>Fotografías</span></div>
         <div className="kpi"><b>{s.counts.videos}</b><span>Videos</span></div>
         <div className="kpi"><b>{s.counts.audio}</b><span>Audios</span></div>
         <div className="kpi"><b>{s.counts.files}</b><span>Archivos</span></div>
       </div>
       <section className="panel">
-        <h2>Capacidad</h2>
-        {pct === null ? (
-          <p className="sub">
-            No se ha configurado la cuota real del plan. Agrega la variable <code>STORAGE_QUOTA_BYTES</code> con el límite de tu plan de Neon para ver el porcentaje y las alertas. No se inventan cuotas.
-          </p>
-        ) : (
-          <>
-            <div className="bar" style={{ height: 14 }}><i style={{ ['--w' as string]: `${pct}%` }} /></div>
-            <p className="sub" style={{ marginTop: 8 }}>{pct.toFixed(1)}% de {fmtBytes(s.quotaBytes)} utilizado</p>
-          </>
-        )}
+        <h2>Sube sin límite</h2>
+        <p className="sub">Carga todas las fotos, videos y audios que necesites, sin tope de espacio y con la calidad original. Cuando ya no los uses, elimínalos desde Media Library.</p>
         <p className="muted" style={{ fontSize: '0.85rem', margin: 0 }}>
           Originales: {fmtBytes(s.originalBytes)} · Versiones de visualización: {fmtBytes(s.variantBytes)}
         </p>

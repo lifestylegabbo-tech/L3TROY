@@ -40,10 +40,10 @@ export const DEFAULT_FORMATS: AllowedFormats = {
   audio: ['audio/mpeg', 'audio/wav', 'audio/x-wav', 'audio/flac', 'audio/x-flac'],
   document: ['application/pdf'],
   max_bytes: {
-    image: 100 * 1024 * 1024,
-    video: 2 * 1024 * 1024 * 1024,
-    audio: 500 * 1024 * 1024,
-    document: 50 * 1024 * 1024,
+    image: 1024 * 1024 * 1024,
+    video: 10 * 1024 * 1024 * 1024,
+    audio: 5 * 1024 * 1024 * 1024,
+    document: 1024 * 1024 * 1024,
   },
 };
 
