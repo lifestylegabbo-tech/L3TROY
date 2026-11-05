@@ -222,9 +222,11 @@ export default async function Home() {
         {/* ====== CAPÍTULO 03 · SETS ====== */}
         <section id="sets" className="chapter magenta" aria-labelledby="h-sets">
           <Head no="03" id="h-sets" title={c.sets_title} lead={c.sets_body} />
-          <Reveal>
-            <SetsPlayer tracks={tracks} />
-          </Reveal>
+          {(tracks.length > 0 || setVideos.length === 0) && (
+            <Reveal>
+              <SetsPlayer tracks={tracks} />
+            </Reveal>
+          )}
           {setVideos.length > 0 && (
             <div className="videos-row">
               {setVideos.map((m) => (
