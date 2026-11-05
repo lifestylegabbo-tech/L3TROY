@@ -243,7 +243,8 @@ export default async function Home() {
         {/* ====== CAPÍTULO 04 · EN CABINA ====== */}
         <section id="eventos" className="chapter purple" aria-labelledby="h-eventos">
           <Head no="04" id="h-eventos" title={c.eventos_title} lead={c.eventos_body} />
-          <div className="events-layout">
+          <div className={`events-layout ${eventList.length ? '' : 'solo'}`}>
+            {eventList.length > 0 && (
             <ul className="timeline">
               {eventList.length ? (
                 eventList.map((e) => (
@@ -261,14 +262,9 @@ export default async function Home() {
                     </div>
                   </Reveal>
                 ))
-              ) : (
-                <li className="event">
-                  <time>PRÓXIMAMENTE</time>
-                  <h3>Nuevas fechas en camino</h3>
-                  <p>Síguelo en redes para enterarte primero.</p>
-                </li>
-              )}
+              ) : null}
             </ul>
+            )}
             <div className="mosaic">
               {pEventos.length ? (
                 pEventos.slice(0, 5).map((m) => (

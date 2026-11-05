@@ -1433,3 +1433,12 @@ body::before {
 @media (max-width: 699px) {
   #sets .vcard { box-shadow: 5px 5px 0 color-mix(in srgb, var(--accent) 80%, #000); }
 }
+
+/* En cabina: solo video, grande y centrado cuando no hay fechas */
+.events-layout.solo { grid-template-columns: 1fr; }
+.events-layout.solo .mosaic { grid-template-columns: 1fr; width: min(100%, 1120px); margin-inline: auto; }
+.events-layout.solo .mosaic .vcard { width: 100%; aspect-ratio: 16 / 9; }
+.events-layout.solo .mosaic .vcard video, .events-layout.solo .mosaic .vcard img { object-fit: contain; background: #000; }
+@media (min-width: 1024px) {
+  .events-layout.solo .mosaic .vcard { border-width: 3px; box-shadow: 14px 14px 0 color-mix(in srgb, var(--accent) 80%, #000), 28px 28px 0 rgba(255, 178, 26, 0.85); }
+}
