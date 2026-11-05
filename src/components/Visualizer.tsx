@@ -50,11 +50,11 @@ export default function Visualizer({ analyser, active = true, className, bars = 
       const gap = Math.max(2, W / bars / 4);
       const bw = W / bars - gap;
       const grad = ctx.createLinearGradient(0, H, 0, 0);
-      grad.addColorStop(0, '#00d9ff');
-      grad.addColorStop(0.55, '#a100ff');
-      grad.addColorStop(1, '#ff00a8');
+      grad.addColorStop(0, '#ffb21a');
+      grad.addColorStop(0.55, '#ee0e26');
+      grad.addColorStop(1, '#ff5c28');
       ctx.fillStyle = grad;
-      ctx.shadowColor = '#a100ff';
+      ctx.shadowColor = '#ee0e26';
       ctx.shadowBlur = 14;
       for (let i = 0; i < bars; i++) {
         let target: number;
