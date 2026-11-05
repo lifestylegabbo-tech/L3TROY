@@ -1409,3 +1409,27 @@ body::before {
 .collabs .frame { aspect-ratio: 4 / 5; }
 .lightbox img, .lightbox video { border-radius: 2px; box-shadow: 10px 10px 0 var(--purple); }
 .stat b { font-family: var(--font-display); font-weight: 400; }
+
+/* Sets: video grande, a todo el ancho en celular y tablet; formato cine en computadora */
+#sets .videos-row {
+  grid-template-columns: 1fr;
+  gap: 22px;
+  margin-top: clamp(24px, 4vw, 48px);
+}
+#sets .videos-row > * { width: 100%; min-width: 0; }
+#sets .vcard { width: 100%; aspect-ratio: 16 / 9; }
+#sets .vcard video, #sets .vcard img { object-fit: contain; background: #000; }
+@media (min-width: 700px) and (max-width: 1023px) {
+  #sets .videos-row > :nth-child(n + 2) { grid-column: auto; }
+}
+@media (min-width: 1024px) {
+  #sets .videos-row { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
+  #sets .videos-row > :first-child { grid-column: 1 / -1; width: min(100%, 1120px); margin-inline: auto; }
+  #sets .videos-row > :first-child .vcard {
+    border-width: 3px;
+    box-shadow: 14px 14px 0 color-mix(in srgb, var(--accent) 80%, #000), 28px 28px 0 rgba(255, 178, 26, 0.85);
+  }
+}
+@media (max-width: 699px) {
+  #sets .vcard { box-shadow: 5px 5px 0 color-mix(in srgb, var(--accent) 80%, #000); }
+}
