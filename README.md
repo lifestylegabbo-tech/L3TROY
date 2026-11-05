@@ -27,7 +27,7 @@ Landing narrativa (storytelling) con identidad neón, panel de administración c
 
 ## Variables de entorno
 
-Ver `.env.example`. Principales: `DATABASE_URL`, `S3_ENDPOINT`, `S3_REGION`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, `SESSION_SECRET` (mín. 32 caracteres), `STORAGE_QUOTA_BYTES` (cuota real del plan; si está vacía el panel no inventa ningún límite).
+Ver `.env.example`. Principales: `DATABASE_URL`, `S3_ENDPOINT`, `S3_REGION`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, `SESSION_SECRET` (mín. 32 caracteres).
 
 ## Puesta en marcha
 
@@ -58,7 +58,7 @@ npm run dev
 
 ## Panel de almacenamiento
 
-Muestra espacio usado (originales + versiones), disponible según `STORAGE_QUOTA_BYTES`, conteo de fotos/videos/audios/archivos, desglose por carpeta, los 10 archivos más pesados y alertas al 75 % y 90 %. El tráfico de transferencia no lo expone el almacenamiento por API; se consulta en la consola de Neon.
+Muestra espacio usado (originales + versiones), conteo de fotos/videos/audios/archivos, desglose por carpeta, los 10 archivos más pesados. El tráfico de transferencia no lo expone el almacenamiento por API; se consulta en la consola de Neon.
 
 ## Contenido editable
 
